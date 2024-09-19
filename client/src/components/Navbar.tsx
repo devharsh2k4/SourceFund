@@ -50,7 +50,7 @@ const Navbar = () => {
           </div>
         </Link>
       </div>
-      //small screen navigate
+      {/* //small screen navigate */}
       <div className="sm:hidden flex justify-between items-center relative">
         <div className="w-[40px] h-[40px] rounded-[10px] bg-slate-950 flex justify-center items-center cursor-pointer">
           <img

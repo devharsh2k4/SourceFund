@@ -1,3 +1,5 @@
+const { ChainId } = require("@thirdweb-dev/react");
+
 require("@matterlabs/hardhat-zksync-solc");
 require('dotenv').config();
 
@@ -41,6 +43,7 @@ module.exports = {
       hardhat: {},
       sepolia: {
         url: API_URL,
+        ChainId: 11155111,
         accounts: [`0x${PRIVATE_KEY}`]
       }
     },

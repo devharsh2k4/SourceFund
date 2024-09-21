@@ -3,7 +3,7 @@ import React from 'react';
 interface CustomButtonProps {
   btnType: "button" | "submit" | "reset";
   title: string;
-  handleClick: React.MouseEventHandler<HTMLButtonElement>;
+  handleClick?: React.MouseEventHandler<HTMLButtonElement>;
   styles?: string;
 }
 

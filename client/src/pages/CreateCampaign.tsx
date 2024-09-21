@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ethers } from "ethers";
 import { CustomButton } from "../components";
 import { money } from "../assets";
 import { checkIfImage } from "../utils";
 import { FormField } from "../components";
+import { useStateContext } from "../context";
+import { ethers } from "ethers";
 
 const CreateCampaign = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const context = useStateContext();
+  if (!context) {
+    throw new Error("useStateContext must be used within a Provider");
+  }
+  const { createCampaign } = context;
   const [form, setForm] = useState({
     name: "",
     title: "",
@@ -22,9 +28,20 @@ const CreateCampaign = () => {
     setForm({ ...form, [fieldName]: e.target.value });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(form);
+
+    checkIfImage(form.image, async (exists:any)=> {
+      if(exists){
+        setIsLoading(true);
+        await createCampaign({...form,target:ethers.utils.parseEther(form.target)});
+        setIsLoading(false);
+        navigate("/");
+      }else{
+        alert("Please enter a valid image url");
+      }
+    });
+   await createCampaign({...form,target:ethers.utils.parseEther(form.target)});
   };
   return (
     <div
@@ -126,7 +143,7 @@ const CreateCampaign = () => {
             btnType="submit"
             title="Submit new Campaign"
             styles="bg-[#1dc071]"
-            handleClick={() => {}}
+            
           />
         </div>
       </form>

@@ -1,11 +1,21 @@
 import { createContext, ReactNode, useContext } from "react";
-import { ChainId, useAddress, useConnect, useContract, useContractWrite, useMetadata, useMetamask } from "@thirdweb-dev/react";
+import {
+  ChainId,
+  useAddress,
+  useConnect,
+  useContract,
+  useContractWrite,
+  useMetadata,
+  useMetamask,
+} from "@thirdweb-dev/react";
+import { ethers } from "ethers";
 
 interface ContextType {
   address: string | undefined;
   contract: any;
-  createCampaign: (form: any) => Promise<void>;
-  connect: () => Promise<void>;
+  createCampaign: (form: any) => Promise<any>;
+  connect: () => Promise<any>;
+  getCampaigns: () => Promise<any>;
 }
 
 interface StateContextProviderProps {
@@ -14,12 +24,19 @@ interface StateContextProviderProps {
 
 const StateContext = createContext<ContextType | null>(null);
 
-export const StateContextProvider = ({ children }: StateContextProviderProps): JSX.Element => {
-  const { contract } = useContract("0x84BFb5b78CD3A511aF627057F4F3f1E6557c0742");
-  const { mutateAsync: createCampaign } = useContractWrite(contract, "createCampaign" as any);
+export const StateContextProvider = ({
+  children,
+}: StateContextProviderProps): JSX.Element => {
+  const { contract } = useContract(
+    import.meta.env.VITE_CONTRACT_ADDRESS as string
+  );
+  const { mutateAsync: createCampaign } = useContractWrite(
+    contract,
+    "createCampaign" as any
+  );
   const address = useAddress();
   const connectWithMetamask = useMetamask();
-  
+
   const connect = async () => {
     try {
       await connectWithMetamask({
@@ -29,8 +46,6 @@ export const StateContextProvider = ({ children }: StateContextProviderProps): J
       console.error("Failed to connect with Metamask to Sepolia:", error);
     }
   };
-
-
 
   const publishCampaign = async (form: any) => {
     try {
@@ -50,6 +65,23 @@ export const StateContextProvider = ({ children }: StateContextProviderProps): J
     }
   };
 
+  const getCampaigns = async () => {
+    const campaigns = await contract?.call("getCampaigns");
+    const parsedCampaigns = campaigns.map((campaign: any , index:Number) => ({
+      owner: campaign.owner,
+      title:campaign.title,
+      description:campaign.description,
+      target: ethers.utils.formatEther(campaign.target.toString()),
+      deadline: campaign.deadline.toNumber(),
+      amountCollected: ethers.utils.formatEther(campaign.amountCollected.toString()),
+      image: campaign.image,
+      pId : index
+
+    }));
+
+    return parsedCampaigns;
+  };
+
   return (
     <StateContext.Provider
       value={{
@@ -57,6 +89,7 @@ export const StateContextProvider = ({ children }: StateContextProviderProps): J
         contract,
         connect,
         createCampaign: publishCampaign,
+        getCampaigns,
       }}
     >
       {children}

@@ -1,13 +1,11 @@
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
-import { ThirdwebProvider } from "@thirdweb-dev/react";
+import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 import "./index.css";
 import { StateContextProvider } from "./context";
 import App from "./App";
 import { createThirdwebClient} from "thirdweb";
-// const client = createThirdwebClient({
-//   secretKey: import.meta.env.VITE_CLIENT_ID, // Use secret key from the environment variable
-// }).secretKey;
+
 
 const client = createThirdwebClient({
   clientId: import.meta.env.VITE_CLIENT_ID, // Use client ID from the environment variable
@@ -15,6 +13,9 @@ const client = createThirdwebClient({
 
 // Sepolia testnet chain ID
 const sepoliaChainId = 11155111; // Numeric chain ID for Sepolia
+
+
+
 
 createRoot(document.getElementById("root")!).render(
   <ThirdwebProvider activeChain={sepoliaChainId} clientId={client}>

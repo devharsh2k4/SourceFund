@@ -16,6 +16,9 @@ interface ContextType {
   createCampaign: (form: any) => Promise<any>;
   connect: () => Promise<any>;
   getCampaigns: () => Promise<any>;
+  getUserCampaigns: () => Promise<any>;
+  getDonations: (pId: string) => Promise<{ donator: string; donation: string }[]>;
+  donate: (pId:any,amount:any) => Promise<any>;
 }
 
 interface StateContextProviderProps {
@@ -67,21 +70,72 @@ export const StateContextProvider = ({
 
   const getCampaigns = async () => {
     const campaigns = await contract?.call("getCampaigns");
-    const parsedCampaigns = campaigns.map((campaign: any , index:Number) => ({
+    const parsedCampaigns = campaigns.map((campaign: any, index: Number) => ({
       owner: campaign.owner,
-      title:campaign.title,
-      description:campaign.description,
+      title: campaign.title,
+      description: campaign.description,
       target: ethers.utils.formatEther(campaign.target.toString()),
       deadline: campaign.deadline.toNumber(),
-      amountCollected: ethers.utils.formatEther(campaign.amountCollected.toString()),
+      amountCollected: ethers.utils.formatEther(
+        campaign.amountCollected.toString()
+      ),
       image: campaign.image,
-      pId : index
-
+      pId: index,
     }));
 
     return parsedCampaigns;
   };
 
+  const getUserCampaigns = async () => {
+    const allCampaigns = await getCampaigns();
+
+    const filteredCampaigns = allCampaigns.filter(
+      (campaign: any) => campaign.owner === address
+    );
+
+    return filteredCampaigns;
+  };
+
+
+  const donate = async (pId: any, amount: any) => {
+    if (!contract) {
+      throw new Error("Contract is not initialized");
+    }
+  
+    try {
+      // Ensure that pId is passed in an array
+      const data = await contract.call("donateToCampaign", [pId], {
+        value: ethers.utils.parseEther(amount.toString()),
+      });
+      return data;
+    } catch (error) {
+      console.error("Donation failed:", error);
+    }
+  };
+  
+  
+
+  const getDonations = async (pId:any)=>{
+if (!contract) {
+  throw new Error("Contract is not initialized");
+}
+if (!pId) {
+  throw new Error("Project ID (pId) is required");
+}
+
+const donations = await contract.call('getDonators', pId);
+const numberOfDonations = donations[0].length;
+
+const parsedDonations = [];
+
+for(let i = 0; i< numberOfDonations; i++){
+  parsedDonations.push({
+    donator: donations[0][i],
+    donation: ethers.utils.formatEther(donations[1][i].toString())
+  })
+}
+return parsedDonations;
+  }
   return (
     <StateContext.Provider
       value={{
@@ -90,6 +144,9 @@ export const StateContextProvider = ({
         connect,
         createCampaign: publishCampaign,
         getCampaigns,
+        getUserCampaigns,
+        donate,
+        getDonations
       }}
     >
       {children}

@@ -28,7 +28,7 @@ const DisplayCampaigns: React.FC<CustomDisplayCampaignsProps> = ({
       >
         {title}({campaigns.length})
       </h1>
-      <div className="flex flex-wrap mt-[20px] gap-[26px]">
+      <div className="flex flex-wrap mt-[20px] gap-[26px] ">
         {isLoading && (
           <img
             src={loader}

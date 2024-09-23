@@ -1,6 +1,6 @@
-# CrowdFunding Project
+#SourceFund
 
-Welcome to the CrowdFunding project! This project aims to create a platform where users can create and support crowdfunding campaigns.
+Welcome to the SourceFund This project aims to create a platform where users can create and support crowdfunding campaigns.
 
 ## Project Overview
 
@@ -14,15 +14,15 @@ In this project, we are developing a web application that allows users to:
 Here are some screenshots of the application:
 
 ### Home Page
-![Home Page](./client/assets/source1.png)
+![Home Page](client/assets/source1.png)
 
 ### Campaign Creation
-![Campaign Creation](./client/assets/source4.png)
-![Campaign Creation](./client/assets/source5.png)
+![Campaign Creation](client/assets/source4.png)
+![Campaign Creation](client/assets/source5.png)
 
 ### Campaign Details
-![Campaign Details](./client/assets/source2.png)
-![Campaign Details](./client/assets/source3.png)
+![Campaign Details](client/assets/source2.png)
+![Campaign Details](client/assets/source3.png)
 
 ## Getting Started
 

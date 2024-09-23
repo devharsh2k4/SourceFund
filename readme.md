@@ -1,4 +1,4 @@
-#SourceFund
+#  SourceFund
 
 Welcome to the SourceFund This project aims to create a platform where users can create and support crowdfunding campaigns.
 
@@ -14,15 +14,15 @@ In this project, we are developing a web application that allows users to:
 Here are some screenshots of the application:
 
 ### Home Page
-![Home Page](client/assets/source1.png)
+![Home Page](https://github.com/devharsh2k4/SourceFund/blob/main/client/src/assets/source1.png)
 
 ### Campaign Creation
-![Campaign Creation](client/assets/source4.png)
-![Campaign Creation](client/assets/source5.png)
+![Campaign Creation](https://github.com/devharsh2k4/SourceFund/blob/main/client/src/assets/source4.png)
+![Campaign Creation](https://github.com/devharsh2k4/SourceFund/blob/main/client/src/assets/source5.png)
 
 ### Campaign Details
-![Campaign Details](client/assets/source2.png)
-![Campaign Details](client/assets/source3.png)
+![Campaign Details](https://github.com/devharsh2k4/SourceFund/blob/main/client/src/assets/source2.png)
+![Campaign Details](https://github.com/devharsh2k4/SourceFund/blob/main/client/src/assets/source3.png)
 
 ## Getting Started
 
